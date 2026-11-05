@@ -9,3 +9,4 @@
 | [003](./003-routing.md) | ルーティング（React Router） | 採用 |
 | [004](./004-data-fetching.md) | データ取得（TanStack Query + fetch） | 採用 |
 | [005](./005-testing.md) | テストフレームワーク（Vitest） | 採用 |
+| [006](./006-directory-structure.md) | ディレクトリ構成（機能単位） | 採用 |
