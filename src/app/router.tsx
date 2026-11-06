@@ -1,9 +1,9 @@
 import { createBrowserRouter } from 'react-router'
-import { paths } from '../config/paths'
-import { ContentRoute } from './routes/content'
-import { HomeRoute } from './routes/home'
-import { NotFoundRoute } from './routes/not-found'
-import { RootLayout } from './routes/root'
+import { paths } from '@/config/paths'
+import { ContentRoute } from '@/app/routes/content'
+import { HomeRoute } from '@/app/routes/home'
+import { NotFoundRoute } from '@/app/routes/not-found'
+import { RootLayout } from '@/app/routes/root'
 
 export const router = createBrowserRouter([
   {

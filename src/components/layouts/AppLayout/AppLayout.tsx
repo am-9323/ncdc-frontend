@@ -1,5 +1,5 @@
 import type { ReactNode } from 'react'
-import logo from '../../../assets/icons/logo.svg'
+import logo from '@/assets/icons/logo.svg'
 import styles from './AppLayout.module.css'
 
 type Props = {
