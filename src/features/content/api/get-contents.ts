@@ -6,14 +6,13 @@ export const contentKeys = {
   all: ['contents'] as const,
 }
 
-export async function getContents(): Promise<Content[]> {
+export const getContents = async (): Promise<Content[]> => {
   const contents = await apiClient.get<Content[]>('/content')
   return (contents ?? []).toSorted((a, b) => a.id - b.id)
 }
 
-export function useContents() {
-  return useQuery({
+export const useContents = () =>
+  useQuery({
     queryKey: contentKeys.all,
     queryFn: getContents,
   })
-}

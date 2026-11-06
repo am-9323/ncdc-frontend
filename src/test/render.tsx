@@ -12,10 +12,10 @@ type Options = {
  * QueryClient と Router を用意してコンポーネントを描画する。
  * テスト間でキャッシュが共有されないよう、毎回新しい QueryClient を作る。
  */
-export function renderWithProviders(
+export const renderWithProviders = (
   ui: ReactElement,
   { route = '/' }: Options = {},
-) {
+) => {
   const queryClient = new QueryClient({
     defaultOptions: { queries: { retry: false } },
   })

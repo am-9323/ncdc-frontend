@@ -23,7 +23,10 @@ export class ApiError extends Error {
  * @returns パースしたレスポンス。本文が空の場合は `null`
  * @throws {ApiError} ステータスが 2xx 以外の場合
  */
-async function request<T>(path: string, init?: RequestInit): Promise<T | null> {
+const request = async <T>(
+  path: string,
+  init?: RequestInit,
+): Promise<T | null> => {
   const response = await fetch(`${API_BASE_URL}${path}`, init)
 
   if (!response.ok) {
@@ -39,13 +42,11 @@ async function request<T>(path: string, init?: RequestInit): Promise<T | null> {
 }
 
 /** JSON の本文を送るリクエストのオプションを作る */
-function jsonInit(method: 'POST' | 'PUT', body: unknown): RequestInit {
-  return {
-    method,
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify(body),
-  }
-}
+const jsonInit = (method: 'POST' | 'PUT', body: unknown): RequestInit => ({
+  method,
+  headers: { 'Content-Type': 'application/json' },
+  body: JSON.stringify(body),
+})
 
 export const apiClient = {
   get: <T>(path: string) => request<T>(path),
