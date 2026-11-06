@@ -1,6 +1,6 @@
 import { useParams } from 'react-router'
 
-export function ContentRoute() {
+export default function ContentRoute() {
   const { id } = useParams()
 
   // TODO: features/content の詳細コンポーネントに id を渡す

@@ -15,6 +15,7 @@
 ## コーディング規約
 
 - import は `@/`（`src/` を指す）からの絶対パスで記述する。ただし同じフォルダ内のファイルは `./` の相対パスで記述する
+- React コンポーネントは `export default` とする。hooks・関数・定数などは named export とする
 
 ## README
 

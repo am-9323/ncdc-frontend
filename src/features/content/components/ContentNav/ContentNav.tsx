@@ -5,7 +5,7 @@ import styles from './ContentNav.module.css'
 
 const UNTITLED = '無題'
 
-export function ContentNav() {
+export default function ContentNav() {
   const { data: contents, isPending, isError } = useContents()
 
   if (isPending) {

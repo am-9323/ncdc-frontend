@@ -5,7 +5,7 @@ type Props = {
   children: ReactNode
 }
 
-export function AppProvider({ children }: Props) {
+export default function AppProvider({ children }: Props) {
   const [queryClient] = useState(() => new QueryClient())
 
   return (

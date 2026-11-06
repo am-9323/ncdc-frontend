@@ -7,7 +7,7 @@ type Props = {
   children: ReactNode
 }
 
-export function AppLayout({ sidebar, children }: Props) {
+export default function AppLayout({ sidebar, children }: Props) {
   return (
     <div className={styles.layout}>
       <aside className={styles.sidebar}>
