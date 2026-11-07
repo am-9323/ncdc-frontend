@@ -16,6 +16,7 @@
 
 - import は `@/`（`src/` を指す）からの絶対パスで記述する。ただし同じフォルダ内のファイルは `./` の相対パスで記述する
 - React コンポーネントは `export default function` とする。hooks・関数・定数などは named export とし、関数はアロー関数で記述する
+- API 呼び出し・hooks・ユーティリティなどの関数には TSDoc 形式（`@param` / `@returns` / `@throws`）で詳細なコメントを書く。コンポーネントのコメントは必要なものだけでよい
 
 ## README
 

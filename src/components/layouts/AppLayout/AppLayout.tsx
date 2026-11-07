@@ -7,6 +7,7 @@ type Props = {
   children: ReactNode
 }
 
+/** 画面全体の枠 */
 export default function AppLayout({ sidebar, children }: Props) {
   return (
     <div className={styles.layout}>

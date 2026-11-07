@@ -18,10 +18,10 @@ export class ApiError extends Error {
 /**
  * API にリクエストを送り、レスポンスを JSON として返す。
  *
- * @param path API のパス（例: `/content`）
- * @param init fetch に渡すオプション（method、body など）
+ * @param path - API のパス（例: `/content`）
+ * @param init - fetch に渡すオプション（method、body など）
  * @returns パースしたレスポンス。本文が空の場合は `null`
- * @throws {ApiError} ステータスが 2xx 以外の場合
+ * @throws {@link ApiError} ステータスが 2xx 以外の場合
  */
 const request = async <T>(
   path: string,
@@ -41,18 +41,55 @@ const request = async <T>(
   return text === '' ? null : (JSON.parse(text) as T)
 }
 
-/** JSON の本文を送るリクエストのオプションを作る */
+/**
+ * JSON の本文を送るリクエストのオプションを作る。
+ *
+ * @param method - HTTP メソッド
+ * @param body - JSON に変換して送る本文
+ * @returns fetch に渡すオプション
+ */
 const jsonInit = (method: 'POST' | 'PUT', body: unknown): RequestInit => ({
   method,
   headers: { 'Content-Type': 'application/json' },
   body: JSON.stringify(body),
 })
 
+/**
+ * API を呼び出すクライアント。
+ *
+ * 各メソッドは本文が空のレスポンスを `null` として返し、
+ * ステータスが 2xx 以外の場合は {@link ApiError} を throw する。
+ */
 export const apiClient = {
+  /**
+   * GET リクエストを送る。
+   *
+   * @param path - API のパス
+   */
   get: <T>(path: string) => request<T>(path),
+
+  /**
+   * POST リクエストを送る。
+   *
+   * @param path - API のパス
+   * @param body - JSON に変換して送る本文
+   */
   post: <T>(path: string, body: unknown) =>
     request<T>(path, jsonInit('POST', body)),
+
+  /**
+   * PUT リクエストを送る。
+   *
+   * @param path - API のパス
+   * @param body - JSON に変換して送る本文
+   */
   put: <T>(path: string, body: unknown) =>
     request<T>(path, jsonInit('PUT', body)),
+
+  /**
+   * DELETE リクエストを送る。
+   *
+   * @param path - API のパス
+   */
   delete: (path: string) => request<null>(path, { method: 'DELETE' }),
 }
