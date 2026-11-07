@@ -9,6 +9,8 @@ type Props = {
   value: string
   /** 編集中の入力内容。`null` は編集中でないことを表す */
   draft: string | null
+  /** 入力内容が条件を満たさない場合は `true`。入力欄の枠を赤くする */
+  isInvalid?: boolean
   /** 入力内容が変わったときの処理 */
   onChange: (value: string) => void
 }
@@ -19,6 +21,7 @@ export default function ContentFieldValue({
   label,
   value,
   draft,
+  isInvalid = false,
   onChange,
 }: Props) {
   const isTitle = field === 'title'
@@ -35,6 +38,7 @@ export default function ContentFieldValue({
     <input
       className={styles.titleInput}
       aria-label={label}
+      aria-invalid={isInvalid}
       autoFocus
       value={draft}
       onChange={(event) => onChange(event.target.value)}
@@ -43,6 +47,7 @@ export default function ContentFieldValue({
     <textarea
       className={styles.bodyInput}
       aria-label={label}
+      aria-invalid={isInvalid}
       autoFocus
       value={draft}
       onChange={(event) => onChange(event.target.value)}

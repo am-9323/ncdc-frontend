@@ -51,3 +51,8 @@
   line-height: inherit;
   resize: none;
 }
+
+.titleInput[aria-invalid='true'],
+.bodyInput[aria-invalid='true'] {
+  border-color: var(--color-error);
+}

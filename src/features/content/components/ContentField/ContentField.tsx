@@ -5,6 +5,10 @@ import saveIcon from '@/assets/icons/save.svg'
 import Button from '@/components/Button/Button'
 import { useUpdateContent } from '@/features/content/api/update-content'
 import ContentFieldValue from '@/features/content/components/ContentFieldValue/ContentFieldValue'
+import {
+  CONTENT_FIELD_RULES,
+  validateContentField,
+} from '@/features/content/utils/validate-content-field'
 import styles from './ContentField.module.css'
 
 const LABELS = { title: 'タイトル', body: '本文' }
@@ -29,12 +33,21 @@ export default function ContentField({
 }: Props) {
   // null は編集中でないことを表す
   const [draft, setDraft] = useState(initialEditing ? value : null)
+  const [isInvalid, setIsInvalid] = useState(false)
   const updateMutation = useUpdateContent()
 
   const label = LABELS[field]
+  const { min, max } = CONTENT_FIELD_RULES[field]
 
   const handleSave = () => {
     if (draft === null) {
+      return
+    }
+    // 条件を満たさない場合は保存せず、メッセージを表示する
+    const isValid = validateContentField(field, draft)
+    setIsInvalid(!isValid)
+    if (!isValid) {
+      updateMutation.reset()
       return
     }
     updateMutation.mutate(
@@ -45,6 +58,7 @@ export default function ContentField({
 
   const handleCancel = () => {
     updateMutation.reset()
+    setIsInvalid(false)
     setDraft(null)
   }
 
@@ -59,8 +73,14 @@ export default function ContentField({
           label={label}
           value={value}
           draft={draft}
+          isInvalid={isInvalid}
           onChange={setDraft}
         />
+        {isInvalid && (
+          <p className={`${styles.message} ${styles.error}`} role="alert">
+            {label}は{min}〜{max}文字で入力してください
+          </p>
+        )}
         {updateMutation.isError && (
           <p className={styles.message} role="alert">
             {label}の保存に失敗しました

@@ -91,6 +91,61 @@ describe('ContentField', () => {
     expect(screen.getByRole('textbox')).toHaveValue('坊ちゃん追記')
   })
 
+  it('条件を満たさない場合は保存せず、メッセージを表示する', async () => {
+    const fetchMock = vi.spyOn(globalThis, 'fetch')
+    renderField()
+
+    await clickButton('Edit')
+    await userEvent.clear(screen.getByRole('textbox'))
+    await clickButton('Save')
+
+    expect(screen.getByRole('alert')).toHaveTextContent(
+      'タイトルは1〜50文字で入力してください',
+    )
+    expect(screen.getByRole('textbox')).toBeInvalid()
+    expect(fetchMock).not.toHaveBeenCalled()
+  })
+
+  it('本文は 10 文字未満の場合に保存しない', async () => {
+    const fetchMock = vi.spyOn(globalThis, 'fetch')
+    renderField({ field: 'body', value: '9文字の本文です。' })
+
+    await clickButton('Edit')
+    await clickButton('Save')
+
+    expect(screen.getByRole('alert')).toHaveTextContent(
+      '本文は10〜2000文字で入力してください',
+    )
+    expect(fetchMock).not.toHaveBeenCalled()
+  })
+
+  it('条件を満たす値で Save し直すとメッセージを消す', async () => {
+    vi.spyOn(globalThis, 'fetch').mockResolvedValue(Response.json({ id: 1 }))
+    renderField()
+
+    await clickButton('Edit')
+    await userEvent.clear(screen.getByRole('textbox'))
+    await clickButton('Save')
+    await userEvent.type(screen.getByRole('textbox'), '方丈記')
+    await clickButton('Save')
+
+    expect(await screen.findByRole('heading')).toBeVisible()
+    expect(screen.queryByRole('alert')).not.toBeInTheDocument()
+  })
+
+  it('Cancel でメッセージを消す', async () => {
+    renderField()
+
+    await clickButton('Edit')
+    await userEvent.clear(screen.getByRole('textbox'))
+    await clickButton('Save')
+    await clickButton('Cancel')
+
+    expect(screen.queryByRole('alert')).not.toBeInTheDocument()
+    await clickButton('Edit')
+    expect(screen.getByRole('textbox')).toBeValid()
+  })
+
   it('initialEditing の場合は編集状態で開く', () => {
     renderField({ initialEditing: true })
 

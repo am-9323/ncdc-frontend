@@ -28,6 +28,10 @@
   font-size: var(--font-size-caption);
 }
 
+.error {
+  color: var(--color-error);
+}
+
 .actions {
   display: flex;
   flex-shrink: 0;
