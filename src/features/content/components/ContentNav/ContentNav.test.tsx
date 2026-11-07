@@ -16,7 +16,7 @@ const createContent = (overrides: Partial<Content>): Content => ({
 /** メモリ上の一覧を操作する API のモック。failOn の method は 500 を返す */
 const mockApi = (
   initialContents: Content[],
-  { failOn }: { failOn?: 'GET' | 'POST' | 'DELETE' } = {},
+  { failOn }: { failOn?: 'POST' | 'DELETE' } = {},
 ) => {
   let contents = initialContents
 
@@ -63,60 +63,6 @@ const enterEditMode = async () => {
 describe('ContentNav', () => {
   afterEach(() => {
     vi.restoreAllMocks()
-  })
-
-  describe('一覧表示', () => {
-    it('ページのタイトル一覧を ID 昇順で表示する', async () => {
-      mockApi([...twoContents].reverse())
-
-      renderWithProviders(<ContentNav />)
-
-      const links = await screen.findAllByRole('link')
-      expect(links.map((link) => link.textContent)).toEqual([
-        '坊ちゃん',
-        '方丈記',
-      ])
-      expect(links[0]).toHaveAttribute('href', '/content/1')
-    })
-
-    it('タイトルが null の場合は「無題」と表示する', async () => {
-      mockApi([createContent({ title: null })])
-
-      renderWithProviders(<ContentNav />)
-
-      expect(await screen.findByRole('link', { name: '無題' })).toBeVisible()
-    })
-
-    it('現在の URL のページを選択状態にする', async () => {
-      mockApi(twoContents)
-
-      renderWithProviders(<ContentNav />, { route: '/content/2' })
-
-      expect(
-        await screen.findByRole('link', { name: '方丈記' }),
-      ).toHaveAttribute('aria-current', 'page')
-      expect(
-        screen.getByRole('link', { name: '坊ちゃん' }),
-      ).not.toHaveAttribute('aria-current')
-    })
-
-    it('ページが 0 件の場合はその旨を表示する', async () => {
-      mockApi([])
-
-      renderWithProviders(<ContentNav />)
-
-      expect(await screen.findByText('ページがありません')).toBeVisible()
-    })
-
-    it('取得に失敗した場合はエラーメッセージを表示する', async () => {
-      mockApi([], { failOn: 'GET' })
-
-      renderWithProviders(<ContentNav />)
-
-      expect(await screen.findByRole('alert')).toHaveTextContent(
-        'ページ一覧の取得に失敗しました',
-      )
-    })
   })
 
   describe('編集モード', () => {
@@ -197,6 +143,19 @@ describe('ContentNav', () => {
         ).not.toBeInTheDocument()
       })
       expect(findRequests(fetchMock, 'DELETE')).toHaveLength(1)
+    })
+
+    it('確認ダイアログに一覧と同じタイトルを表示する', async () => {
+      const confirm = vi.spyOn(window, 'confirm').mockReturnValue(false)
+      mockApi([createContent({ title: null })])
+      renderWithProviders(<ContentNav />)
+      await enterEditMode()
+
+      await userEvent.click(
+        await screen.findByRole('button', { name: '無題を削除' }),
+      )
+
+      expect(confirm).toHaveBeenCalledWith('「無題」を削除しますか？')
     })
 
     it('確認でキャンセルなら DELETE しない', async () => {

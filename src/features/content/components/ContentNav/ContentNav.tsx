@@ -1,27 +1,16 @@
 import { useState } from 'react'
-import { NavLink, useMatch, useNavigate } from 'react-router'
-import deleteIcon from '@/assets/icons/delete.svg'
+import { useMatch, useNavigate } from 'react-router'
 import doneIcon from '@/assets/icons/done.svg'
 import editIcon from '@/assets/icons/edit.svg'
 import plusIcon from '@/assets/icons/plus.svg'
 import Button from '@/components/Button/Button'
-import IconButton from '@/components/IconButton/IconButton'
 import { paths } from '@/config/paths'
 import { useCreateContent } from '@/features/content/api/create-content'
 import { useDeleteContent } from '@/features/content/api/delete-content'
 import { useContents } from '@/features/content/api/get-contents'
+import ContentList from '@/features/content/components/ContentList/ContentList'
 import type { Content } from '@/features/content/types'
 import styles from './ContentNav.module.css'
-
-const UNTITLED = '無題'
-
-/**
- * サイドバーに表示するタイトルを返す。
- *
- * @param content - 対象のページ
- * @returns 前後の空白を除いたタイトル。`null` や空の場合は「無題」
- */
-const getTitle = (content: Content) => content.title?.trim() || UNTITLED
 
 /**
  * 削除後に選択するページを返す。
@@ -37,12 +26,13 @@ const findNextContent = (contents: Content[], id: number) => {
 
 export default function ContentNav() {
   const [isEditing, setIsEditing] = useState(false)
-  const { data: contents, isPending, isError } = useContents()
+  const { data: contents = [] } = useContents()
   const createMutation = useCreateContent()
   const deleteMutation = useDeleteContent()
   const navigate = useNavigate()
   // ContentNav はレイアウト側にあるため、useParams では子ルートの id を取得できない
-  const selectedId = Number(useMatch(paths.content.path)?.params.id)
+  const match = useMatch(paths.content.path)
+  const selectedId = match ? Number(match?.params.id) : undefined
 
   const isMutating = createMutation.isPending || deleteMutation.isPending
 
@@ -57,18 +47,18 @@ export default function ContentNav() {
    * 確認ダイアログで OK が押されたらページを削除する。
    * 選択中のページを削除した場合は、次のページかトップ画面へ遷移する。
    *
-   * @param content - 削除するページ
-   * @param currentContents - 削除前のページ一覧
+   * @param id - 削除するページの ID
+   * @param title - 確認ダイアログに表示するタイトル
    */
-  const handleDelete = (content: Content, currentContents: Content[]) => {
-    if (!window.confirm(`「${getTitle(content)}」を削除しますか？`)) {
+  const handleDelete = (id: number, title: string) => {
+    if (!window.confirm(`「${title}」を削除しますか？`)) {
       return
     }
 
-    const nextContent = findNextContent(currentContents, content.id)
-    deleteMutation.mutate(content.id, {
+    const nextContent = findNextContent(contents, id)
+    deleteMutation.mutate(id, {
       onSuccess: () => {
-        if (content.id !== selectedId) {
+        if (id !== selectedId) {
           return
         }
         navigate(
@@ -80,66 +70,15 @@ export default function ContentNav() {
     })
   }
 
-  const renderList = () => {
-    if (isPending) {
-      return <p className={styles.message}>読み込み中...</p>
-    }
-
-    if (isError) {
-      return (
-        <p className={styles.message} role="alert">
-          ページ一覧の取得に失敗しました
-        </p>
-      )
-    }
-
-    if (contents.length === 0) {
-      return <p className={styles.message}>ページがありません</p>
-    }
-
-    return (
-      <nav aria-label="ページ一覧">
-        <ul className={styles.list}>
-          {contents.map((content) => {
-            const title = getTitle(content)
-            return (
-              <li key={content.id} className={styles.row}>
-                <NavLink
-                  to={paths.content.getHref(content.id)}
-                  className={({ isActive }) =>
-                    [
-                      styles.item,
-                      isActive && styles.active,
-                      isEditing && styles.editing,
-                    ]
-                      .filter(Boolean)
-                      .join(' ')
-                  }
-                  title={title}
-                >
-                  {title}
-                </NavLink>
-                {isEditing && (
-                  <div className={styles.delete}>
-                    <IconButton
-                      icon={deleteIcon}
-                      label={`${title}を削除`}
-                      disabled={isMutating}
-                      onClick={() => handleDelete(content, contents)}
-                    />
-                  </div>
-                )}
-              </li>
-            )
-          })}
-        </ul>
-      </nav>
-    )
-  }
-
   return (
     <div className={styles.root}>
-      <div className={styles.body}>{renderList()}</div>
+      <div className={styles.body}>
+        <ContentList
+          isEditing={isEditing}
+          isDeleteDisabled={isMutating}
+          onDelete={handleDelete}
+        />
+      </div>
 
       {createMutation.isError && (
         <p className={styles.message} role="alert">
