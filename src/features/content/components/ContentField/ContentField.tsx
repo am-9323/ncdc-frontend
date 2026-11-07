@@ -9,7 +9,7 @@ import {
   CONTENT_FIELD_RULES,
   validateContentField,
 } from '@/features/content/utils/validate-content-field'
-import styles from './ContentField.module.css'
+import styles from './ContentField.module.scss'
 
 const LABELS = { title: 'タイトル', body: '本文' }
 

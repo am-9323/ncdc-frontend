@@ -4,7 +4,7 @@ import IconButton from '@/components/IconButton/IconButton'
 import { paths } from '@/config/paths'
 import { useContents } from '@/features/content/api/get-contents'
 import type { Content } from '@/features/content/types'
-import styles from './ContentList.module.css'
+import styles from './ContentList.module.scss'
 
 const UNTITLED = '無題'
 

@@ -1,3 +1,5 @@
+@use '@/styles/variables' as *;
+
 .root {
   display: flex;
   flex: 1;
@@ -12,8 +14,8 @@
   color: var(--color-text-light);
 }
 
-/* SP・タブレット縦画面（AppLayout と同じ切り替え幅） */
-@media (max-width: 1023px) {
+/* SP・タブレット縦画面 */
+@media (max-width: $sp-max-width) {
   .root {
     gap: 16px;
     padding: 16px;

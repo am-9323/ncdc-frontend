@@ -1,4 +1,4 @@
-import styles from './IconButton.module.css'
+import styles from './IconButton.module.scss'
 
 type Props = {
   /** 表示するアイコンの画像パス */

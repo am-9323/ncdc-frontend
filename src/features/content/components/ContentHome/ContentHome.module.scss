@@ -1,11 +1,13 @@
+@use '@/styles/variables' as *;
+
 .message {
   margin: 0;
   padding: 30px;
   color: var(--color-text-light);
 }
 
-/* SP・タブレット縦画面（AppLayout と同じ切り替え幅） */
-@media (max-width: 1023px) {
+/* SP・タブレット縦画面 */
+@media (max-width: $sp-max-width) {
   .message {
     padding: 16px;
   }

@@ -10,7 +10,7 @@ import { useDeleteContent } from '@/features/content/api/delete-content'
 import { useContents } from '@/features/content/api/get-contents'
 import ContentList from '@/features/content/components/ContentList/ContentList'
 import type { Content } from '@/features/content/types'
-import styles from './ContentNav.module.css'
+import styles from './ContentNav.module.scss'
 
 /**
  * 削除後に選択するページを返す。

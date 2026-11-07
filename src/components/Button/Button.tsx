@@ -1,4 +1,4 @@
-import styles from './Button.module.css'
+import styles from './Button.module.scss'
 
 type Props = {
   /** 見た目の種類。既定は `primary` */

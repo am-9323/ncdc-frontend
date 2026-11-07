@@ -1,7 +1,7 @@
 import { useLocation } from 'react-router'
 import { useContent } from '@/features/content/api/get-content'
 import ContentField from '@/features/content/components/ContentField/ContentField'
-import styles from './ContentDetail.module.css'
+import styles from './ContentDetail.module.scss'
 
 type Props = {
   /** 表示するページの ID */

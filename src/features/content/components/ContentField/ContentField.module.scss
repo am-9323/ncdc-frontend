@@ -1,3 +1,5 @@
+@use '@/styles/variables' as *;
+
 .field {
   display: flex;
   gap: 20px;
@@ -40,8 +42,8 @@
   width: 90px;
 }
 
-/* SP・タブレット縦画面（AppLayout と同じ切り替え幅） */
-@media (max-width: 1023px) {
+/* SP・タブレット縦画面 */
+@media (max-width: $sp-max-width) {
   .field {
     gap: 12px;
   }

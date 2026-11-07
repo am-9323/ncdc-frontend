@@ -4,7 +4,7 @@ import closeIcon from '@/assets/icons/close.svg'
 import logo from '@/assets/icons/logo.svg'
 import menuIcon from '@/assets/icons/menu.svg'
 import IconButton from '@/components/IconButton/IconButton'
-import styles from './AppLayout.module.css'
+import styles from './AppLayout.module.scss'
 
 type Props = {
   /** サイドバーに表示する内容 */

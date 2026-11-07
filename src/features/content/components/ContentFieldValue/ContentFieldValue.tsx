@@ -1,4 +1,4 @@
-import styles from './ContentFieldValue.module.css'
+import styles from './ContentFieldValue.module.scss'
 
 type Props = {
   /** 表示する項目 */

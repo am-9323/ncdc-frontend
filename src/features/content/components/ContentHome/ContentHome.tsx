@@ -1,7 +1,7 @@
 import { Navigate } from 'react-router'
 import { paths } from '@/config/paths'
 import { useContents } from '@/features/content/api/get-contents'
-import styles from './ContentHome.module.css'
+import styles from './ContentHome.module.scss'
 
 /** トップ画面の中身。先頭のページへ移動し、ページがなければ作成を促す */
 export default function ContentHome() {
