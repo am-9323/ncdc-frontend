@@ -1,14 +1,25 @@
-.nav {
+.root {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  min-height: 0;
+}
+
+.body {
   flex: 1;
   min-height: 0;
   overflow-y: auto;
-  padding: 0 10px 0 40px;
+  padding-left: 40px;
 }
 
 .list {
   margin: 0;
   padding: 0;
   list-style: none;
+}
+
+.row {
+  position: relative;
 }
 
 .item {
@@ -34,8 +45,37 @@
   font-weight: bold;
 }
 
+/* ゴミ箱アイコンとタイトルが重ならないよう右余白を広げる */
+.editing {
+  padding-right: 44px;
+}
+
+.delete {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  display: flex;
+}
+
 .message {
   margin: 0;
-  padding: 0 40px;
+  padding: 10px 40px;
   color: var(--color-text-light);
+}
+
+.body .message {
+  padding: 0;
+}
+
+.actions {
+  display: flex;
+  flex-shrink: 0;
+  height: 60px;
+  padding: 10px 10px 10px 40px;
+  background-color: var(--color-border);
+}
+
+/* ボタンが 1 つでも 2 つでも、最後のボタンを右端に置く */
+.actions > :last-child {
+  margin-left: auto;
 }
