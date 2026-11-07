@@ -56,3 +56,22 @@
 .bodyInput[aria-invalid='true'] {
   border-color: var(--color-error);
 }
+
+/* SP・タブレット縦画面（AppLayout と同じ切り替え幅） */
+@media (max-width: 1023px) {
+  .title {
+    padding: 0 16px;
+  }
+
+  .titleInput {
+    padding: 0 15px;
+  }
+
+  .body {
+    padding: 16px;
+  }
+
+  .bodyInput {
+    padding: 15px;
+  }
+}

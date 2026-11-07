@@ -39,3 +39,10 @@
   align-self: flex-start;
   width: 90px;
 }
+
+/* SP・タブレット縦画面（AppLayout と同じ切り替え幅） */
+@media (max-width: 1023px) {
+  .field {
+    gap: 12px;
+  }
+}

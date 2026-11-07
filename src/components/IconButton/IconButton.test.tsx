@@ -37,4 +37,13 @@ describe('IconButton', () => {
 
     expect(screen.getByRole('button')).toHaveAttribute('type', 'button')
   })
+
+  it('expanded を開閉状態として伝える', () => {
+    render(<IconButton icon="/icon.svg" label="メニュー" expanded={false} />)
+
+    expect(screen.getByRole('button', { name: 'メニュー' })).toHaveAttribute(
+      'aria-expanded',
+      'false',
+    )
+  })
 })

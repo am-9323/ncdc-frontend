@@ -11,3 +11,15 @@
   padding: 30px;
   color: var(--color-text-light);
 }
+
+/* SP・タブレット縦画面（AppLayout と同じ切り替え幅） */
+@media (max-width: 1023px) {
+  .root {
+    gap: 16px;
+    padding: 16px;
+  }
+
+  .message {
+    padding: 16px;
+  }
+}

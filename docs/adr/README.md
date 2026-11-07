@@ -15,3 +15,4 @@
 | [009](./009-common-component-props.md) | 共通コンポーネントの props | 採用 |
 | [010](./010-query-keys.md) | TanStack Query のキーの配置（キー専用ファイル） | 採用 |
 | [011](./011-validation.md) | バリデーション（自前の関数） | 採用 |
+| [012](./012-responsive.md) | レスポンシブ対応（2 パターン、ドロワー） | 採用 |
