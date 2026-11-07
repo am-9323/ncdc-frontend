@@ -1,5 +1,6 @@
 import { screen, waitFor } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
+import { useLocation } from 'react-router'
 import type { Content } from '@/features/content/types'
 import { renderWithProviders } from '@/test/render'
 import ContentNav from './ContentNav'
@@ -56,6 +57,9 @@ const twoContents = [
   createContent({ id: 2, title: '方丈記' }),
 ]
 
+/** 画面遷移時に渡された state を表示する */
+const LocationState = () => <p>{JSON.stringify(useLocation().state)}</p>
+
 const enterEditMode = async () => {
   await userEvent.click(await screen.findByRole('button', { name: 'Edit' }))
 }
@@ -111,6 +115,21 @@ describe('ContentNav', () => {
       const body = JSON.parse(String(init?.body))
       expect(body.title).toBe('無題のページ')
       expect(body.body.length).toBeGreaterThanOrEqual(10)
+    })
+
+    it('作成したページへタイトルを編集する指定を付けて遷移する', async () => {
+      mockApi(twoContents)
+      renderWithProviders(
+        <>
+          <ContentNav />
+          <LocationState />
+        </>,
+      )
+      await enterEditMode()
+
+      await userEvent.click(screen.getByRole('button', { name: 'New page' }))
+
+      expect(await screen.findByText('{"editTitle":true}')).toBeVisible()
     })
 
     it('失敗した場合はエラーメッセージを表示する', async () => {

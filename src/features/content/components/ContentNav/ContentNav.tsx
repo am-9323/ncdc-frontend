@@ -36,10 +36,13 @@ export default function ContentNav() {
 
   const isMutating = createMutation.isPending || deleteMutation.isPending
 
-  /** ページを作成し、成功したら作成したページへ遷移する */
+  /** ページを作成し、成功したら作成したページへ遷移してタイトルを編集状態で開く */
   const handleCreate = () => {
     createMutation.mutate(undefined, {
-      onSuccess: (created) => navigate(paths.content.getHref(created.id)),
+      onSuccess: (created) =>
+        navigate(paths.content.getHref(created.id), {
+          state: { editTitle: true },
+        }),
     })
   }
 

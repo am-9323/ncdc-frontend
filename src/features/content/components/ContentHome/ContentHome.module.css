@@ -1,0 +1,5 @@
+.message {
+  margin: 0;
+  padding: 30px;
+  color: var(--color-text-light);
+}

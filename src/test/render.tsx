@@ -1,11 +1,11 @@
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import { render } from '@testing-library/react'
 import type { ReactElement } from 'react'
-import { MemoryRouter } from 'react-router'
+import { MemoryRouter, type InitialEntry } from 'react-router'
 
 type Options = {
   /** 初期表示する URL */
-  route?: string
+  route?: InitialEntry
 }
 
 /**

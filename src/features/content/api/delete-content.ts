@@ -1,5 +1,5 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query'
-import { contentKeys } from '@/features/content/api/get-contents'
+import { contentKeys } from '@/features/content/api/content-keys'
 import { apiClient } from '@/lib/api-client'
 
 /**
@@ -24,6 +24,6 @@ export const useDeleteContent = () => {
   return useMutation({
     mutationFn: deleteContent,
     onSuccess: () =>
-      queryClient.invalidateQueries({ queryKey: contentKeys.all }),
+      queryClient.invalidateQueries({ queryKey: contentKeys.list }),
   })
 }

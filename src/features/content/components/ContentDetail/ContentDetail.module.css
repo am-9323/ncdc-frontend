@@ -1,0 +1,13 @@
+.root {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  gap: 20px;
+  padding: 30px;
+}
+
+.message {
+  margin: 0;
+  padding: 30px;
+  color: var(--color-text-light);
+}

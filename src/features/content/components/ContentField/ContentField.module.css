@@ -1,0 +1,37 @@
+.field {
+  display: flex;
+  gap: 20px;
+}
+
+.titleField {
+  flex-shrink: 0;
+}
+
+/* 高さを内容に依存させず、本文カードや入力欄の中でスクロールする */
+.bodyField {
+  flex: 1 0 0;
+  height: 0;
+  min-height: 200px;
+}
+
+.content {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  gap: 4px;
+  min-width: 0;
+}
+
+.message {
+  margin: 0;
+  color: var(--color-text-light);
+  font-size: var(--font-size-caption);
+}
+
+.actions {
+  display: flex;
+  flex-shrink: 0;
+  justify-content: space-between;
+  align-self: flex-start;
+  width: 90px;
+}

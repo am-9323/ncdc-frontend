@@ -1,11 +1,7 @@
 import { useQuery } from '@tanstack/react-query'
+import { contentKeys } from '@/features/content/api/content-keys'
 import { apiClient } from '@/lib/api-client'
 import type { Content } from '@/features/content/types'
-
-/** ページ関連の TanStack Query のキー */
-export const contentKeys = {
-  all: ['contents'] as const,
-}
 
 /**
  * ページ一覧を取得する。
@@ -27,6 +23,6 @@ export const getContents = async (): Promise<Content[]> => {
  */
 export const useContents = () =>
   useQuery({
-    queryKey: contentKeys.all,
+    queryKey: contentKeys.list,
     queryFn: getContents,
   })
