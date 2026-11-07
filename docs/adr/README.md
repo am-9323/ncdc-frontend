@@ -10,3 +10,7 @@
 | [004](./004-data-fetching.md) | データ取得（TanStack Query + fetch） | 採用 |
 | [005](./005-testing.md) | テストフレームワーク（Vitest） | 採用 |
 | [006](./006-directory-structure.md) | ディレクトリ構成（機能単位） | 採用 |
+| [007](./007-import-path.md) | import のパス（`@/` の絶対パス） | 採用 |
+| [008](./008-export-and-function-style.md) | export と関数の書き方 | 採用 |
+| [009](./009-common-component-props.md) | 共通コンポーネントの props | 採用 |
+| [010](./010-query-keys.md) | TanStack Query のキーの配置（キー専用ファイル） | 採用 |
