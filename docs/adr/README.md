@@ -20,3 +20,4 @@
 | [014](./014-file-naming.md) | ファイル名の付け方 | 採用 |
 | [015](./015-api-mock.md) | テストでの API のモック（MSW） | 採用 |
 | [016](./016-test-code-location.md) | テスト用コードの配置と依存ルール | 採用 |
+| [017](./017-loading-and-error-display.md) | 取得中・エラーの表示（useQuery の状態で分岐） | 採用 |

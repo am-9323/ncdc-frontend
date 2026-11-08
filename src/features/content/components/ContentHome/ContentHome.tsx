@@ -4,7 +4,7 @@ import { paths } from '@/config/paths'
 import { useContents } from '@/features/content/api/get-contents'
 import styles from './ContentHome.module.scss'
 
-/** トップ画面の中身。先頭のページへ移動し、ページがなければ作成を促す */
+/** トップ画面の中身。先頭のページへ移動し、ページがなければその旨を表示する */
 export default function ContentHome() {
   const { data: contents, isPending, isError } = useContents()
 
