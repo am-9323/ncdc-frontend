@@ -1,26 +1,22 @@
-import { render, screen } from '@testing-library/react'
+import { screen } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
-import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import type { ComponentProps } from 'react'
+import { buildContent } from '@/test/data-generators'
+import { mockContentApi } from '@/test/mocks/content'
+import { renderWithProviders } from '@/test/render'
 import ContentField from './ContentField'
 
 const renderField = (
   props: Partial<ComponentProps<typeof ContentField>> = {},
 ) =>
-  render(
-    <QueryClientProvider client={new QueryClient()}>
-      <ContentField contentId={1} field="title" value="坊ちゃん" {...props} />
-    </QueryClientProvider>,
+  renderWithProviders(
+    <ContentField contentId={1} field="title" value="坊ちゃん" {...props} />,
   )
 
 const clickButton = (name: string) =>
   userEvent.click(screen.getByRole('button', { name }))
 
 describe('ContentField', () => {
-  afterEach(() => {
-    vi.restoreAllMocks()
-  })
-
   it('タイトルは見出しとして表示する', () => {
     renderField()
 
@@ -58,9 +54,9 @@ describe('ContentField', () => {
   })
 
   it('Save で編集した項目だけを PUT し、表示に戻す', async () => {
-    const fetchMock = vi
-      .spyOn(globalThis, 'fetch')
-      .mockResolvedValue(Response.json({ id: 1 }))
+    const requests = mockContentApi([
+      buildContent({ id: 5, title: '坊ちゃん' }),
+    ])
     renderField({ contentId: 5 })
 
     await clickButton('Edit')
@@ -69,16 +65,13 @@ describe('ContentField', () => {
     await clickButton('Save')
 
     expect(await screen.findByRole('heading')).toBeVisible()
-    const [url, init] = fetchMock.mock.calls[0]
-    expect(String(url)).toMatch(/\/content\/5$/)
-    expect(init?.method).toBe('PUT')
-    expect(JSON.parse(String(init?.body))).toEqual({ title: '方丈記' })
+    expect(requests).toEqual([
+      { method: 'PUT', path: '/content/5', body: { title: '方丈記' } },
+    ])
   })
 
   it('保存に失敗した場合はエラーを表示し、入力を維持する', async () => {
-    vi.spyOn(globalThis, 'fetch').mockResolvedValue(
-      new Response('', { status: 500 }),
-    )
+    mockContentApi([buildContent({ id: 1 })], { failOn: 'PUT' })
     renderField()
 
     await clickButton('Edit')
@@ -92,7 +85,7 @@ describe('ContentField', () => {
   })
 
   it('条件を満たさない場合は保存せず、メッセージを表示する', async () => {
-    const fetchMock = vi.spyOn(globalThis, 'fetch')
+    const requests = mockContentApi([buildContent({ id: 1 })])
     renderField()
 
     await clickButton('Edit')
@@ -103,11 +96,11 @@ describe('ContentField', () => {
       'タイトルは1〜50文字で入力してください',
     )
     expect(screen.getByRole('textbox')).toBeInvalid()
-    expect(fetchMock).not.toHaveBeenCalled()
+    expect(requests).toEqual([])
   })
 
   it('本文は 10 文字未満の場合に保存しない', async () => {
-    const fetchMock = vi.spyOn(globalThis, 'fetch')
+    const requests = mockContentApi([buildContent({ id: 1 })])
     renderField({ field: 'body', value: '9文字の本文です。' })
 
     await clickButton('Edit')
@@ -116,11 +109,11 @@ describe('ContentField', () => {
     expect(screen.getByRole('alert')).toHaveTextContent(
       '本文は10〜2000文字で入力してください',
     )
-    expect(fetchMock).not.toHaveBeenCalled()
+    expect(requests).toEqual([])
   })
 
   it('条件を満たす値で Save し直すとメッセージを消す', async () => {
-    vi.spyOn(globalThis, 'fetch').mockResolvedValue(Response.json({ id: 1 }))
+    mockContentApi([buildContent({ id: 1 })])
     renderField()
 
     await clickButton('Edit')

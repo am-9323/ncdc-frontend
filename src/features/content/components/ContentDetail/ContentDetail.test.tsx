@@ -1,27 +1,19 @@
 import { screen, within } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
+import { buildContent } from '@/test/data-generators'
+import { mockContentApi } from '@/test/mocks/content'
 import { renderWithProviders } from '@/test/render'
 import ContentDetail from './ContentDetail'
 
-const content = {
+const content = buildContent({
   id: 1,
   title: '坊ちゃん',
   body: '親譲りの無鉄砲で\n小供の時から損ばかりしている。',
-  createdAt: '2022-06-02T00:00:00.000Z',
-  updatedAt: '2022-06-02T00:00:00.000Z',
-}
-
-const mockFetch = (response: Response) => {
-  vi.spyOn(globalThis, 'fetch').mockResolvedValue(response)
-}
+})
 
 describe('ContentDetail', () => {
-  afterEach(() => {
-    vi.restoreAllMocks()
-  })
-
   it('タイトルと本文を表示する', async () => {
-    mockFetch(Response.json(content))
+    mockContentApi([content])
 
     renderWithProviders(<ContentDetail id={1} />)
 
@@ -34,7 +26,7 @@ describe('ContentDetail', () => {
   })
 
   it('取得に失敗した場合はエラーメッセージを表示する', async () => {
-    mockFetch(new Response('', { status: 500 }))
+    mockContentApi([content], { failOn: 'GET' })
 
     renderWithProviders(<ContentDetail id={1} />)
 
@@ -43,8 +35,8 @@ describe('ContentDetail', () => {
     )
   })
 
-  it('API が空のレスポンスを返した場合は見つからない旨を表示する', async () => {
-    mockFetch(new Response(''))
+  it('存在しない ID の場合は見つからない旨を表示する', async () => {
+    mockContentApi([])
 
     renderWithProviders(<ContentDetail id={1} />)
 
@@ -52,7 +44,7 @@ describe('ContentDetail', () => {
   })
 
   it('タイトルと本文を同時に編集できる', async () => {
-    mockFetch(Response.json(content))
+    mockContentApi([content])
     renderWithProviders(<ContentDetail id={1} />)
 
     await userEvent.click(
@@ -72,7 +64,7 @@ describe('ContentDetail', () => {
   })
 
   it('editTitle の指定があればタイトルだけ編集状態で開く', async () => {
-    mockFetch(Response.json(content))
+    mockContentApi([content])
 
     renderWithProviders(<ContentDetail id={1} />, {
       route: { pathname: '/content/1', state: { editTitle: true } },

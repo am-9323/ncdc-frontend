@@ -1,22 +1,10 @@
 import type { ComponentProps } from 'react'
 import { screen } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
-import type { Content } from '@/features/content/types'
+import { buildContent } from '@/test/data-generators'
+import { mockContentApi } from '@/test/mocks/content'
 import { renderWithProviders } from '@/test/render'
 import ContentList from './ContentList'
-
-const createContent = (overrides: Partial<Content>): Content => ({
-  id: 1,
-  title: 'タイトル',
-  body: '本文',
-  createdAt: '2022-06-02T00:00:00.000Z',
-  updatedAt: '2022-06-02T00:00:00.000Z',
-  ...overrides,
-})
-
-const mockFetch = (response: Response) => {
-  vi.spyOn(globalThis, 'fetch').mockResolvedValue(response)
-}
 
 const renderContentList = (
   props: Partial<ComponentProps<typeof ContentList>> = {},
@@ -33,18 +21,14 @@ const renderContentList = (
   )
 
 const twoContents = [
-  createContent({ id: 1, title: '坊ちゃん' }),
-  createContent({ id: 2, title: '方丈記' }),
+  buildContent({ id: 1, title: '坊ちゃん' }),
+  buildContent({ id: 2, title: '方丈記' }),
 ]
 
 describe('ContentList', () => {
-  afterEach(() => {
-    vi.restoreAllMocks()
-  })
-
   describe('一覧表示', () => {
     it('ページのタイトル一覧を ID 昇順で表示する', async () => {
-      mockFetch(Response.json([...twoContents].reverse()))
+      mockContentApi([...twoContents].reverse())
 
       renderContentList()
 
@@ -57,7 +41,7 @@ describe('ContentList', () => {
     })
 
     it('タイトルが null の場合は「無題」と表示する', async () => {
-      mockFetch(Response.json([createContent({ title: null })]))
+      mockContentApi([buildContent({ title: null })])
 
       renderContentList()
 
@@ -65,7 +49,7 @@ describe('ContentList', () => {
     })
 
     it('現在の URL のページを選択状態にする', async () => {
-      mockFetch(Response.json(twoContents))
+      mockContentApi(twoContents)
 
       renderContentList({}, { route: '/content/2' })
 
@@ -78,7 +62,7 @@ describe('ContentList', () => {
     })
 
     it('ページが 0 件の場合はその旨を表示する', async () => {
-      mockFetch(Response.json([]))
+      mockContentApi([])
 
       renderContentList()
 
@@ -86,7 +70,7 @@ describe('ContentList', () => {
     })
 
     it('取得に失敗した場合はエラーメッセージを表示する', async () => {
-      mockFetch(new Response('', { status: 500 }))
+      mockContentApi([], { failOn: 'GET' })
 
       renderContentList()
 
@@ -98,7 +82,7 @@ describe('ContentList', () => {
 
   describe('ゴミ箱', () => {
     it('編集モードでない場合は表示しない', async () => {
-      mockFetch(Response.json(twoContents))
+      mockContentApi(twoContents)
 
       renderContentList()
 
@@ -109,7 +93,7 @@ describe('ContentList', () => {
     })
 
     it('編集モードの場合は各ページに表示する', async () => {
-      mockFetch(Response.json(twoContents))
+      mockContentApi(twoContents)
 
       renderContentList({ isEditing: true })
 
@@ -120,7 +104,7 @@ describe('ContentList', () => {
     })
 
     it('isDeleteDisabled の場合は押せない', async () => {
-      mockFetch(Response.json(twoContents))
+      mockContentApi(twoContents)
 
       renderContentList({ isEditing: true, isDeleteDisabled: true })
 
@@ -130,7 +114,7 @@ describe('ContentList', () => {
     })
 
     it('押すと onDelete に ID と表示中のタイトルを渡す', async () => {
-      mockFetch(Response.json([createContent({ id: 3, title: null })]))
+      mockContentApi([buildContent({ id: 3, title: null })])
       const onDelete = vi.fn()
 
       renderContentList({ isEditing: true, onDelete })

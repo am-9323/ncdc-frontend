@@ -14,5 +14,7 @@ export default defineConfig({
     environment: 'jsdom',
     globals: true,
     setupFiles: './src/test/setup.ts',
+    // vi.spyOn で差し替えた window.confirm などを、テストごとに元へ戻す
+    restoreMocks: true,
   },
 })
