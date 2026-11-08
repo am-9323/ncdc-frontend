@@ -1,6 +1,0 @@
-dist
-coverage
-package-lock.json
-
-# ドキュメントは手書きの体裁を維持する
-*.md

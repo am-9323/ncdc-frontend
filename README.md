@@ -33,7 +33,8 @@ npm run dev            # http://localhost:5173
 | `npm run build` | 型チェックとビルド |
 | `npm test` | テストを実行する（1 回だけ実行する場合は `npm test -- --run`） |
 | `npm run lint` | oxlint で静的解析する |
-| `npm run format:check` | Prettier で整形を確認する |
+| `npm run format` | oxfmt で整形する |
+| `npm run format:check` | oxfmt で整形を確認する |
 
 ## 技術スタック
 
@@ -46,6 +47,7 @@ npm run dev            # http://localhost:5173
 | ルーティング | React Router | 事実上の標準で、要件に対して十分 | 003 |
 | データ取得 | TanStack Query + fetch | 読み込み中・エラー・再取得を簡潔に書ける。API 数が少なく fetch で十分 | 004 |
 | テスト | Vitest + Testing Library + MSW | Jest とほぼ同じ API で、Vite の設定を共有できる。MSW は URL とメソッドごとに API のモックを書ける | 005、015 |
+| 静的解析・整形 | oxlint + oxfmt | oxlint は雛形に標準で入っていたため採用し、整形もそれに合わせて同じ Oxc の oxfmt にそろえた。軽量で速い | 019 |
 
 ## 設計
 
