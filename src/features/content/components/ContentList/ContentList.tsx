@@ -1,3 +1,4 @@
+import { clsx } from 'clsx'
 import { NavLink } from 'react-router'
 import deleteIcon from '@/assets/icons/delete.svg'
 import IconButton from '@/components/IconButton/IconButton'
@@ -64,13 +65,10 @@ export default function ContentList({
               <NavLink
                 to={paths.content.getHref(content.id)}
                 className={({ isActive }) =>
-                  [
-                    styles.item,
-                    isActive && styles.active,
-                    isEditing && styles.editing,
-                  ]
-                    .filter(Boolean)
-                    .join(' ')
+                  clsx(styles.item, {
+                    [styles.active]: isActive,
+                    [styles.editing]: isEditing,
+                  })
                 }
                 title={title}
               >

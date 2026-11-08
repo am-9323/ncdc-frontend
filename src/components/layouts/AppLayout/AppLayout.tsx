@@ -1,3 +1,4 @@
+import { clsx } from 'clsx'
 import { useState, type ReactNode } from 'react'
 import { useLocation } from 'react-router'
 import closeIcon from '@/assets/icons/close.svg'
@@ -52,7 +53,7 @@ export default function AppLayout({ sidebar, children }: Props) {
           onClick={closeMenu}
         />
       )}
-      <aside className={`${styles.sidebar} ${isMenuOpen ? styles.open : ''}`}>
+      <aside className={clsx(styles.sidebar, { [styles.open]: isMenuOpen })}>
         <div className={styles.sidebarHeader}>
           {renderLogo()}
           <div className={styles.close}>

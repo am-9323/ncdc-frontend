@@ -1,3 +1,4 @@
+import { clsx } from 'clsx'
 import styles from './Button.module.scss'
 
 type Props = {
@@ -27,7 +28,7 @@ export default function Button({
   return (
     <button
       type="button"
-      className={`${styles.button} ${styles[variant]} ${styles[size]}`}
+      className={clsx(styles.button, styles[variant], styles[size])}
       disabled={disabled}
       onClick={onClick}
     >

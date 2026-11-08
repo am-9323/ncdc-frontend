@@ -1,3 +1,4 @@
+import { clsx } from 'clsx'
 import { useState } from 'react'
 import cancelIcon from '@/assets/icons/cancel.svg'
 import editIcon from '@/assets/icons/edit.svg'
@@ -65,7 +66,7 @@ export default function ContentField({
   return (
     <section
       aria-label={label}
-      className={`${styles.field} ${styles[`${field}Field`]}`}
+      className={clsx(styles.field, styles[`${field}Field`])}
     >
       <div className={styles.content}>
         <ContentFieldValue
@@ -77,7 +78,7 @@ export default function ContentField({
           onChange={setDraft}
         />
         {isInvalid && (
-          <p className={`${styles.message} ${styles.error}`} role="alert">
+          <p className={clsx(styles.message, styles.error)} role="alert">
             {label}は{min}〜{max}文字で入力してください
           </p>
         )}

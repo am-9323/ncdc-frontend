@@ -21,3 +21,4 @@
 | [015](./015-api-mock.md) | テストでの API のモック（MSW） | 採用 |
 | [016](./016-test-code-location.md) | テスト用コードの配置と依存ルール | 採用 |
 | [017](./017-loading-and-error-display.md) | 取得中・エラーの表示（useQuery の状態で分岐） | 採用 |
+| [018](./018-classname-utility.md) | 複数クラスの指定（clsx） | 採用 |
