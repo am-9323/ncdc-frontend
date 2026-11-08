@@ -1,4 +1,5 @@
 import { useLocation } from 'react-router'
+import Spinner from '@/components/Spinner/Spinner'
 import { useContent } from '@/features/content/api/get-content'
 import ContentField from '@/features/content/components/ContentField/ContentField'
 import styles from './ContentDetail.module.scss'
@@ -14,7 +15,11 @@ export default function ContentDetail({ id }: Props) {
   const location = useLocation()
 
   if (isPending) {
-    return <p className={styles.message}>読み込み中...</p>
+    return (
+      <div className={styles.message}>
+        <Spinner />
+      </div>
+    )
   }
 
   if (isError) {

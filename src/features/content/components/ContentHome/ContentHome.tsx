@@ -1,4 +1,5 @@
 import { Navigate } from 'react-router'
+import Spinner from '@/components/Spinner/Spinner'
 import { paths } from '@/config/paths'
 import { useContents } from '@/features/content/api/get-contents'
 import styles from './ContentHome.module.scss'
@@ -8,7 +9,11 @@ export default function ContentHome() {
   const { data: contents, isPending, isError } = useContents()
 
   if (isPending) {
-    return <p className={styles.message}>読み込み中...</p>
+    return (
+      <div className={styles.message}>
+        <Spinner />
+      </div>
+    )
   }
 
   if (isError) {
