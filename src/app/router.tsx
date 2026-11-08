@@ -1,11 +1,12 @@
-import { createBrowserRouter } from 'react-router'
+import { createBrowserRouter, type RouteObject } from 'react-router'
 import { paths } from '@/config/paths'
 import ContentRoute from '@/app/routes/content'
 import ContentLayout from '@/app/routes/content-layout'
 import HomeRoute from '@/app/routes/home'
 import NotFoundRoute from '@/app/routes/not-found'
 
-export const router = createBrowserRouter([
+/** URL と画面の対応。テストでも同じ定義を使うため、ルーターとは分けて export する */
+export const routes: RouteObject[] = [
   {
     path: paths.root.path,
     children: [
@@ -20,4 +21,6 @@ export const router = createBrowserRouter([
       },
     ],
   },
-])
+]
+
+export const router = createBrowserRouter(routes)
