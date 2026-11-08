@@ -1,10 +1,10 @@
 import type { Content } from '@/features/content/types'
 
 /**
- * テスト用のページを作る。
+ * テスト用のページデータ（`Content`）を生成する。
  *
  * @param overrides - 既定値から変更する項目
- * @returns 既定値に `overrides` を上書きしたページ
+ * @returns 既定値に `overrides` を上書きした `Content`
  */
 export const buildContent = (overrides: Partial<Content> = {}): Content => ({
   id: 1,
